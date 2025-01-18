@@ -21,9 +21,18 @@ export default function Home() {
             <Navbar />
           </div>
           <Hero />
+          {/* <div className=""><BentoGridSecondDemo/></div> */}
         </div>
       </div>
-      <div className="p-4 w-full mx-auto rounded-md  h-fit overflow-hidden ">
+
+      <div
+        className="h-fit w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] 
+        bg-grid-black/[0.2] flex flex-col justify-center md:hidden p-4"
+      >
+          <div className=""><BentoGridSecondDemo/></div> 
+      </div>
+
+      <div className="p-4 w-full mx-auto rounded-md  h-fit overflow-hidden hidden md:block ">
         <Vortex
           backgroundColor="black"
           rangeY={800}
