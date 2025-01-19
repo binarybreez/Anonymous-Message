@@ -2,6 +2,9 @@
 import BentoGridSecondDemo from "@/components/BentoGrid";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/pages/Footer";
+import InfiniteMovingCardsDemo from "@/components/pages/MovingCards";
+import AnimatedTooltipPreview from "@/components/Tooltip";
 import { Vortex } from "@/components/ui/vortex";
 
 export default function Home() {
@@ -25,12 +28,14 @@ export default function Home() {
         </div>
       </div>
 
-      <div
+      {/* <div
         className="h-fit w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] 
         bg-grid-black/[0.2] flex flex-col justify-center md:hidden p-4"
       >
-          <div className=""><BentoGridSecondDemo/></div> 
-      </div>
+      </div> */}
+          <div className="md:hidden p-4 h-fit rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+          <BentoGridSecondDemo/>
+          </div> 
 
       <div className="p-4 w-full mx-auto rounded-md  h-fit overflow-hidden hidden md:block ">
         <Vortex
@@ -43,8 +48,11 @@ export default function Home() {
           <BentoGridSecondDemo/>
         </Vortex>
       </div>
-      <div className="h-[100vh]">
-        page3
+      <div className="h-fit">
+        <InfiniteMovingCardsDemo/>
+      </div>
+      <div className="">
+        <Footer/>
       </div>
     </div>
   );
