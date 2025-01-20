@@ -172,7 +172,7 @@ export default function Page() {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-between">
+              <div className="flex md:justify-between md:flex-row flex-col justify-center items-center">
                 <Button type="submit" variant={"secondary"}>
                   {isSubmitting ? (
                     <>
@@ -183,7 +183,7 @@ export default function Page() {
                     "Sign up"
                   )}
                 </Button>
-                <div className="">
+                <div className="mt-2">
                   <p>
                     Already a member ?
                     <Link
