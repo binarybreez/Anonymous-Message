@@ -1,10 +1,10 @@
-import connnectDB from "@/lib/connectDB";
+import connectDB from "@/lib/connectDB";
 import UserModel from "@/models/user.model";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "@/helper/sendEmail";
 
 export async function POST(request: Request) {
-  await connnectDB();
+  await connectDB();
   const verificationCode = Math.floor(
     100000 + Math.random() * 900000
   ).toString();
