@@ -4,36 +4,31 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/pages/Footer";
 import InfiniteMovingCardsDemo from "@/components/pages/MovingCards";
-import AnimatedTooltipPreview from "@/components/Tooltip";
 import { Vortex } from "@/components/ui/vortex";
 
 export default function Home() {
   return (
     <div className="">
       <div
-        className="h-[100vh] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] 
-        bg-grid-black/[0.2] flex flex-col justify-center"
+        className="h-[100vh] w-full bg-black bg-grid-white/[0.2] 
+        flex flex-col justify-center"
       >
         {/* Radial gradient for the container to give a faded look */}
         <div
-          className="absolute pointer-events-none inset-0 flex  dark:bg-black
-          bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"
+          className="absolute pointer-events-none inset-0 flex bg-black
+           [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"
         ></div>
         <div className="h-full">
           <div className="flex items-center justify-center sticky top-6 ">
             <Navbar />
           </div>
           <Hero />
-          {/* <div className=""><BentoGridSecondDemo/></div> */}
         </div>
       </div>
 
-      {/* <div
-        className="h-fit w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] 
-        bg-grid-black/[0.2] flex flex-col justify-center md:hidden p-4"
-      >
-      </div> */}
-          <div className="md:hidden p-4 h-fit rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+          <div className="md:hidden p-4 h-fit rounded-md flex flex-col antialiased
+            bg-black bg-grid-white/[0.05] items-center justify-center
+            relative overflow-hidden">
           <BentoGridSecondDemo/>
           </div> 
 
