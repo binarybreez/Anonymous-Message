@@ -17,10 +17,6 @@ import { Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 export default function Dashboard() {
@@ -64,7 +60,9 @@ export default function Dashboard() {
       setSwitchLoading(true);
       try {
         const response = await axios.get("/api/get-messages");
-        setMessages(response.data.message || []);
+        console.log(response.data.data)
+        setMessages(response.data.data);
+        console.log("messages",messages)
         if (refresh) {
           toast({
             title: "Success",
@@ -161,20 +159,15 @@ export default function Dashboard() {
         {isSubmitting && <Loader2 className="animate-spin" />}
       </div>
       <div className="">
-        {Array.isArray(messages) && messages.length > 0 ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card Description</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Card Content</p>
-            </CardContent>
-            <CardFooter>
-              <p>Card Footer</p>
-            </CardFooter>
-          </Card>
-        ) : (
+        {Array.isArray(messages) && messages.length > 0 ? messages.map((message) => (
+          <div className="" key={message._id}>
+            <Card>
+              <CardContent>
+                <p>{message.content}</p>
+              </CardContent>
+            </Card>
+          </div>
+        )) : (
           <p>No Messages to display</p>
         )}
       </div>

@@ -22,7 +22,7 @@ export async function GET(){
             {$match: {_id: userId}},
             {$unwind: "$message"},
             {$sort: {"message.createdAt": -1}},
-            {$group: {_id: "$_id", message: {$push: "message"}}},
+            {$group: {_id: "$_id", message: {$push: "$message"}}},
         ])
         if(!user[0]){
             return Response.json({
@@ -31,9 +31,10 @@ export async function GET(){
                 success: false
             })
         }
+        console.log(user[0].message)
         return Response.json({
             status: 201,
-            message: user[0].message,
+            data: user[0].message,
             success: true
         })
     } catch (error) {
