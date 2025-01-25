@@ -13,11 +13,9 @@ import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/helper/ApiResponse";
 import { User } from "next-auth";
 import { Switch } from "@/components/ui/switch";
-import { Loader2 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Loader2, RefreshCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Carousel from "@/components/ui/carousel";
 
 export default function Dashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -60,18 +58,19 @@ export default function Dashboard() {
       setSwitchLoading(true);
       try {
         const response = await axios.get("/api/get-messages");
-        console.log(response.data.data)
+        console.log(response.data.data);
         setMessages(response.data.data);
-        console.log("messages",messages)
+        console.log("messages", messages);
         if (refresh) {
           toast({
             title: "Success",
             description: "Messages Refreshed Successfully",
           });
+          refresh = false;
         }
         toast({
           title: "Success",
-          description: response.data.message,
+          description: "Messages Refreshed",
         });
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse>;
@@ -149,25 +148,39 @@ export default function Dashboard() {
       <div className="w-full mt-5">
         <Copysection profileURL={profileURL} buttonFunction={copyToClipboard} />
       </div>
-      <div className="flex w-fit gap-2 bg-white rounded-md p-2">
-        <Switch
-          {...register("acceptMessage")}
-          onCheckedChange={handleSwitchChange}
-          checked={acceptMessage}
-          disabled={switchLoading}
-        />
+      <div className="flex items-center w-fit gap-2 bg-transparent ">
+        <div className="bg-white rounded-md p-1">
+          <Switch
+            {...register("acceptMessage")}
+            onCheckedChange={handleSwitchChange}
+            checked={acceptMessage}
+            disabled={switchLoading}
+          />
+        </div>
         {isSubmitting && <Loader2 className="animate-spin" />}
+        <Button
+          variant={"outline"}
+          onClick={(e) => {
+            e.preventDefault();
+            fetchMessage(true);
+          }}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="animate-spin h-4 w-4" /> <p>Refreshing</p>
+            </>
+          ) : (
+            <RefreshCcw className="h-4 w-4" />
+          )}
+        </Button>
       </div>
       <div className="">
-        {Array.isArray(messages) && messages.length > 0 ? messages.map((message) => (
-          <div className="" key={message._id}>
-            <Card>
-              <CardContent>
-                <p>{message.content}</p>
-              </CardContent>
-            </Card>
+        {Array.isArray(messages) && messages.length > 0 ? 
+        (<div className=" bg-transparent flex items-center justify-center p-4">
+          <div className="w-full max-w-7xl px-4">
+            <Carousel initialMessages={messages} />
           </div>
-        )) : (
+        </div> ) : (
           <p>No Messages to display</p>
         )}
       </div>
