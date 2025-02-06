@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import Copysection from "@/components/dashboard/Copysection";
 import Navbar from "@/components/dashboard/Navbar";
@@ -85,7 +85,7 @@ export default function Dashboard() {
         setSwitchLoading(false);
       }
     },
-    [setIsSubmitting, setMessages, toast]
+    [setIsSubmitting, setMessages, toast, messages]
   );
 
   useEffect(() => {

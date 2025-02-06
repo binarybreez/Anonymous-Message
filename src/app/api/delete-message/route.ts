@@ -1,12 +1,14 @@
 import connectDB from "@/lib/connectDB";
 import UserModel from "@/models/user.model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/options";
 import { User } from "next-auth";
 import mongoose from "mongoose";
-export async function POST(req:Request,{ params }: { params: { id: string }}){
+import { authOptions } from "../auth/[...nextauth]/options";
+export async function POST(req:Request){
     connectDB();
-    const {id} = await params
+    const {id} = req.body
+    
+
     const session = await getServerSession(authOptions);
     const user:User = session?.user;
     if(!user){

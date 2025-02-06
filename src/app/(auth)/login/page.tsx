@@ -37,7 +37,7 @@ export default function Page() {
   const onSubmit = async (data: z.infer<typeof signinSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await signIn("credentials",{
+      const response = await signIn("Credentials",{
         redirect: false,
         identifier: data.identifier,
         password: data.password
