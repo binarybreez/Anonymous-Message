@@ -1,9 +1,8 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import svgToDataUri from 'mini-svg-data-uri';
-import colors from 'tailwindcss/colors';
-import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette';
-import type { Config } from "tailwindcss";
-
+import type { Config } from 'tailwindcss';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette');
 export default {
     darkMode: ["selector"],
     content: ["./src/**/*.{ts,tsx}"],
@@ -73,12 +72,14 @@ export default {
   		}
   	}
   },
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [addVariablesForColors, gridDot, require("tailwindcss-animate")],
 } satisfies Config;
 
+ 
 function addVariablesForColors({ addBase, theme }: any) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(
+  const allColors = flattenColorPalette(theme("colors"));
+  const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
   );
  
@@ -87,6 +88,7 @@ function addVariablesForColors({ addBase, theme }: any) {
   });
 }
 
+ 
 function gridDot ({ matchUtilities, theme }: any) {
   matchUtilities(
     {
@@ -109,3 +111,4 @@ function gridDot ({ matchUtilities, theme }: any) {
     { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
   );
 }
+

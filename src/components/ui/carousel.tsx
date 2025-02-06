@@ -82,7 +82,7 @@ export default function Carousel({ initialMessages }: CarouselProps) {
   const handleDelete = useCallback(async (id: mongoose.Types.ObjectId) => {
     setMessages((prevMessages) => prevMessages.filter((message) => message._id.toString() !== id.toString()))
     try {
-      const response = await axios.post(`/api/delete-message`,{id: id.toString()})
+      const response = await axios.delete(`/api/delete-message/${id.toString()}`)
       toast({
         title:"Message deleted successfully",
         description: response.data.message,

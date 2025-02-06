@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { MouseEvent, useState } from "react";
 import {
   motion,
   useTransform,
@@ -32,8 +32,8 @@ export const AnimatedTooltip = ({
     useTransform(x, [-100, 100], [-50, 50]),
     springConfig
   );
-  const handleMouseMove = (event) => {
-    const halfWidth = event.target.offsetWidth / 2;
+  const handleMouseMove = (event: MouseEvent) => {
+    const halfWidth = (event.target as HTMLElement).offsetWidth / 2;
     x.set(event.nativeEvent.offsetX - halfWidth); // set the x value, which is then used in transform and rotate
   };
 

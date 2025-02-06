@@ -37,17 +37,17 @@ export default function Page() {
   const onSubmit = async (data: z.infer<typeof signinSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await signIn("Credentials",{
+      const response = await signIn("Credentials", {
         redirect: false,
         identifier: data.identifier,
-        password: data.password
+        password: data.password,
       });
       console.log("result of sign in", response);
-      if(response?.error) {
+      if (response?.error) {
         toast({
           title: "Sign up Failed",
           description: response.error,
-          variant: "destructive"
+          variant: "destructive",
         });
       } else {
         toast({
@@ -56,13 +56,14 @@ export default function Page() {
         });
         router.push(`/dashboard`);
       }
-      if(response?.url){router.push("/dashboard")}
-      
+      if (response?.url) {
+        router.push("/dashboard");
+      }
     } catch (error) {
       console.log("Error in signing up of user : ", error);
       toast({
         title: "Signup Failed",
-        description:"Signup Failed try again in few moments",
+        description: "Signup Failed try again in few moments",
         variant: "destructive",
       });
     } finally {

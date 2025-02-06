@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
 
-function Navbar({username}) {
+function Navbar({username}:{username: string | undefined}) {
   return (
     <div className='flex justify-around items-center   py-2 rounded-3xl md:w-[90%] w-full border-2  border-zinc-400
     bg-zinc-950 text-white'>

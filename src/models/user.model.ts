@@ -19,6 +19,7 @@ const messageSchema: Schema<Message> = new Schema({
 });
 
 export interface User extends Document {
+  _id: mongoose.Types.ObjectId
   username: string;
   email: string;
   password: string;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
 
-function Copysection({profileURL, buttonFunction}) {
+function Copysection({profileURL, buttonFunction}: {profileURL: string, buttonFunction: () => void}) {
   return (
     <div className='w-full'>
         <div className="text-lg text-white w-fit md:w-full  py-1 md:flex md:justify-center items-center">

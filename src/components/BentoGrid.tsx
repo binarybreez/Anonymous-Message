@@ -11,7 +11,7 @@ import {
   IconTableColumn,
 } from "@tabler/icons-react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 export default function BentoGridSecondDemo() {
   return (
@@ -29,11 +29,11 @@ export default function BentoGridSecondDemo() {
     </BentoGrid>
   );
 }
-const Skeleton = ({image}) => (
+const Skeleton = ({image}: {image: StaticImageData}) => (
   <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl 
     bg-dot-white/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] 
      border border-white/[0.2] bg-black">
-      <Image src={image} alt="loading" />
+      <Image src={image.src} alt="loading" />
      </div>
 );
 const items = [
