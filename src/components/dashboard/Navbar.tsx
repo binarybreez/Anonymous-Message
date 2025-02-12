@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from '../ui/button'
+import { signOut } from 'next-auth/react'
 
 function Navbar({username}:{username: string | undefined}) {
   return (
@@ -12,7 +13,7 @@ function Navbar({username}:{username: string | undefined}) {
             <h1>Hello, {username}</h1>
         </div>
         <div className="">
-            <Button>
+            <Button onClick={async () => await signOut()}>
                 Logout
             </Button>
         </div>

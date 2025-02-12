@@ -1,9 +1,8 @@
 import connectDB from "@/lib/connectDB";
 import UserModel from "@/models/user.model";
 import { getServerSession } from "next-auth";
-import { User } from "next-auth";
 import mongoose from "mongoose";
-import { authOptions } from "../../auth/[...nextauth]/options";
+import { authOptions } from "@/auth";
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> } 
@@ -11,7 +10,7 @@ export async function DELETE(
   connectDB();
   const { id } = await params;
   const session = await getServerSession(authOptions);
-  const user: User = session?.user;
+  const user = session?.user;
   if (!user) {
     return Response.json({
       status: 401,
@@ -22,7 +21,7 @@ export async function DELETE(
   try {
     const messageId = new mongoose.Types.ObjectId(id);
     const updatedResult = await UserModel.updateOne(
-      { _id: user._id },
+      { _id: user.id },
       { $pull: { message: { _id: messageId } } },
       { new: true }
     );

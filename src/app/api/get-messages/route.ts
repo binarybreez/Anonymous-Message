@@ -1,14 +1,13 @@
 import connectDB from "@/lib/connectDB";
 import UserModel from "@/models/user.model";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
-import { User } from "next-auth";
 import mongoose from "mongoose";
+import { authOptions } from "@/auth";
 
 export async function GET(){
     await connectDB();
     const session = await getServerSession(authOptions);
-    const user: User = session?.user;
+    const user  = session?.user;
     if(!user){
         return Response.json({
             status: 401,
@@ -16,7 +15,7 @@ export async function GET(){
             success:false
         })
     }
-    const userId = new mongoose.Types.ObjectId(user._id);
+    const userId = new mongoose.Types.ObjectId(user.id);
     try {
         const user = await UserModel.aggregate([
             {$match: {_id: userId}},

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Copysection from "@/components/dashboard/Copysection";
 import Navbar from "@/components/dashboard/Navbar";
@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/helper/ApiResponse";
-import { User } from "next-auth";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ export default function Dashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [switchLoading, setSwitchLoading] = useState(false);
+  const [baseURL, setBaseURL] = useState("");
 
   const { toast } = useToast();
 
@@ -53,7 +53,7 @@ export default function Dashboard() {
   }, [setValue, toast]);
 
   const fetchMessage = useCallback(
-    async (refresh: boolean = false) => {
+    async () => {
       setIsSubmitting(true);
       setSwitchLoading(true);
       try {
@@ -61,13 +61,6 @@ export default function Dashboard() {
         console.log(response.data.data);
         setMessages(response.data.data);
         console.log("messages", messages);
-        if (refresh) {
-          toast({
-            title: "Success",
-            description: "Messages Refreshed Successfully",
-          });
-          refresh = false;
-        }
         toast({
           title: "Success",
           description: "Messages Refreshed",
@@ -85,14 +78,39 @@ export default function Dashboard() {
         setSwitchLoading(false);
       }
     },
-    [setIsSubmitting, setMessages, toast, messages]
-  );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setIsSubmitting, setMessages, toast]);
+
+  const handleRefresh = async () => {
+    setIsSubmitting(true);
+    try {
+      const response = await axios.get("/api/get-messages");
+      setMessages(response.data.data);
+      toast({
+        title: "Success",
+        description: "Messages Refreshed Successfully",
+      });
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast({
+        title: "Error",
+        description:
+          axiosError.response?.data.message || "Failed in accepting messages",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     if (!session || !session?.user) return;
+    if (typeof window !== "undefined") {
+      setBaseURL(`${window.location.protocol}//${window.location.host}`);
+    }
     fetchMessage();
     fetchAcceptMessage();
-  }, [session, fetchMessage, fetchAcceptMessage, setValue]);
+  }, [session, setValue, toast, fetchAcceptMessage, fetchMessage]);
 
   const handleSwitchChange = async () => {
     setSwitchLoading(true);
@@ -117,12 +135,8 @@ export default function Dashboard() {
       setSwitchLoading(false);
     }
   };
-  if (!session || !session?.user) {
-    return <div className="text-2xl font-bold">Please Login</div>;
-  }
 
-  const { username } = session?.user as User;
-  const baseURL = `${window.location.protocol}//${window.location.host}`;
+  const username = session?.user.username;
   const profileURL = `${baseURL}/users/${username}`;
 
   const copyToClipboard = () => {
@@ -162,7 +176,7 @@ export default function Dashboard() {
           variant={"outline"}
           onClick={(e) => {
             e.preventDefault();
-            fetchMessage(true);
+            handleRefresh();
           }}
         >
           {isSubmitting ? (
@@ -175,12 +189,13 @@ export default function Dashboard() {
         </Button>
       </div>
       <div className="">
-        {Array.isArray(messages) && messages.length > 0 ? 
-        (<div className=" bg-transparent flex items-center justify-center p-4">
-          <div className="w-full max-w-7xl px-4">
-            <Carousel initialMessages={messages} />
+        {Array.isArray(messages) && messages.length > 0 ? (
+          <div className=" bg-transparent flex items-center justify-center p-4">
+            <div className="w-full max-w-7xl px-4">
+              <Carousel initialMessages={messages} />
+            </div>
           </div>
-        </div> ) : (
+        ) : (
           <p>No Messages to display</p>
         )}
       </div>

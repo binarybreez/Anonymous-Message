@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,17 +18,16 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { signinSchema } from "@/schemas/signinSchema";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const router = useRouter();
   const { toast } = useToast();
-
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      identifier: "",
+      email: "",
       password: "",
     },
   });
@@ -37,28 +35,27 @@ export default function Page() {
   const onSubmit = async (data: z.infer<typeof signinSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await signIn("Credentials", {
+      console.log(data);
+      const response = await signIn("credentials", {
         redirect: false,
-        identifier: data.identifier,
+        email: data.email,
         password: data.password,
       });
       console.log("result of sign in", response);
-      if (response?.error) {
-        toast({
-          title: "Sign up Failed",
-          description: response.error,
-          variant: "destructive",
-        });
-      } else {
+      if (response?.ok) {
         toast({
           title: "Success",
           description: "Sign in Successfull",
         });
-        router.push(`/dashboard`);
-      }
-      if (response?.url) {
         router.push("/dashboard");
+      }  else {
+        toast({
+          title: "Sign up Failed",
+          description: response?.error,
+          variant: "destructive",
+        });
       }
+
     } catch (error) {
       console.log("Error in signing up of user : ", error);
       toast({
@@ -91,7 +88,7 @@ export default function Page() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
-                name="identifier"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username or Email</FormLabel>

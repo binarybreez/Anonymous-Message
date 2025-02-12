@@ -1,13 +1,13 @@
+import { authOptions } from "@/auth";
 import connectDB from "@/lib/connectDB";
 import UserModel from "@/models/user.model";
-import { authOptions } from "../auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
-import { User } from "next-auth";
+import mongoose from "mongoose"
 
 export async function POST(req: Request) {
   await connectDB();
   const session = await getServerSession(authOptions);
-  const user: User = session?.user;
+  const user = session?.user;
   if (!user) {
     return Response.json({
       status: 401,
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
       success: false,
     });
   }
-  const userId = user._id;
+  const userId = new mongoose.Types.ObjectId(user.id);
   const { acceptingMessage } = await req.json();
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(
@@ -51,8 +51,8 @@ export async function POST(req: Request) {
 export async function GET() {
   await connectDB();
   const session = await getServerSession(authOptions);
-  const user: User = session?.user;
-  const userId = user._id;
+  const user = session?.user;
+  const userId = new mongoose.Types.ObjectId(user?.id);
   try {
     const foundUser = await UserModel.findById(userId);
     if (!foundUser) {
