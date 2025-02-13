@@ -91,7 +91,7 @@ This project is licensed under the [MIT License](LICENSE).
 - **Resend Email Service**: For the email OTP functionality.
 - **ShadCN**: For UI component library used.
 - **Next.js**: For the framework and API routes.
-- **Hitesh Choudhary**: Special thanks to Hitesh Choudhary sir for his valuable guidance during development.
+
 
 ---
 
